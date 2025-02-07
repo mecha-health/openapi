@@ -1,2 +1,3 @@
-# openapi
-Spec for our API
+# OpenAPI Spec
+
+Repository to host our OpenAPI Spec.
