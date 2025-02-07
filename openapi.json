@@ -24,25 +24,21 @@
           "description": "Infer the findings section of a CXR image",
           "parameters": [
             {
-              "name": "limit",
+              "name": "image_url",
               "in": "query",
-              "description": "The maximum number of results to return",
+              "description": "The Base64 encoded CXR image to infer",
               "schema": {
-                "type": "integer",
-                "format": "int32"
+                "type": "string"
               }
             }
           ],
           "responses": {
             "200": {
-              "description": "Plant response",
+              "description": "CXR interpretation response",
               "content": {
                 "application/json": {
                   "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Plant"
-                    }
+                    "type": "string"
                   }
                 }
               }
@@ -56,48 +52,34 @@
                   }
                 }
               }
+            },
+            "500": {
+              "description": "Internal server error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
             }
           }
-        }      
+        }
       }
     },
     "components": {
       "schemas": {
-        "Plant": {
+        "CXRInterpretation": {
           "required": [
-            "name"
+            "findings"
           ],
           "type": "object",
           "properties": {
-            "name": {
-              "description": "The name of the plant",
-              "type": "string"
-            },
-            "tag": {
-              "description": "Tag to specify the type",
+            "findings": {
+              "description": "The findings of the CXR image",
               "type": "string"
             }
           }
-        },
-        "NewPlant": {
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/Plant"
-            },
-            {
-              "required": [
-                "id"
-              ],
-              "type": "object",
-              "properties": {
-                "id": {
-                  "description": "Identification number of the plant",
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            }
-          ]
         },
         "Error": {
           "required": [
