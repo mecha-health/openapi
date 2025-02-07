@@ -24,11 +24,21 @@
           "description": "Infer the findings section of a CXR image",
           "parameters": [
             {
-              "name": "image_url",
+              "name": "image",
               "in": "query",
               "description": "The Base64 encoded CXR image to infer",
               "schema": {
                 "type": "string"
+              },
+              "required": true
+            },
+            {
+              "name": "language",
+              "in": "query",
+              "description": "The language of the findings",
+              "schema": {
+                "type": "string",
+                "enum": ["en", "es"]
               }
             }
           ],
@@ -54,16 +64,25 @@
               }
             },
             "500": {
-              "description": "Internal server error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Error"
+                "description": "Internal server error occurred during inference processing",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "error": {
+                          "type": "string",
+                          "example": "Internal server error"
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "An unexpected error occurred while processing your request. Please try again later or contact support if the issue persists."
+                        }
+                      }
+                    }
                   }
                 }
-              }
             }
-          }
         }
       }
     },
@@ -73,11 +92,19 @@
           "required": [
             "findings"
           ],
+          "optional": [
+            "language"
+          ],
           "type": "object",
           "properties": {
             "findings": {
               "description": "The findings of the CXR image",
               "type": "string"
+            },
+            "language": {
+              "description": "The language of the findings",
+              "type": "string",
+              "enum": ["en", "es"]
             }
           }
         },
@@ -105,4 +132,5 @@
         }
       }
     }
+  }
   }
